@@ -457,6 +457,9 @@ public class Calc {
 
 	/**
 	 * Jacobi法
+	 * @param n 判定法の選択
+	 * (1:相対誤差1ノルム,2:相対誤差2ノルム,3:相対誤差∞ノルム,
+	 * 	4:残差1ノルム,5:残差2ノルム,6:残差∞ノルム)
 	 * @param A 行列
 	 * @param b ベクトル
 	 * @param x_k1 初期値
@@ -464,35 +467,35 @@ public class Calc {
 	 * @param N 最大反復回数
 	 * @return x (Ax=b)
 	 */
-	public static double[] jacobi(double [][] A,double[] x_k1, double[] b, double eps, int N){
-		double[] x_k2 = new double[x_k1.length];
+	public static double[] jacobi(int n,double [][] A,double[] x_old, double[] b, double eps, int N){
+		double[] x_new = new double[x_old.length];
 		int count = 0; //反復回数
 
 		for(int m=0;m<N;m++){
 			count++;
 
-			for(int i=0;i<x_k2.length;i++){
-				x_k2[i] = b[i];
+			for(int i=0;i<x_new.length;i++){
+				x_new[i] = b[i];
 				for(int j=0;j<A[0].length;j++){
 					if(i!=j){
-						x_k2[i] = x_k2[i] - A[i][j]*x_k1[j];
+						x_new[i] = x_new[i] - A[i][j]*x_old[j];
 					}
 				}
-				x_k2[i] = x_k2[i]/A[i][i];
+				x_new[i] = x_new[i]/A[i][i];
 
 			}
 
-			for(int l=0;l<x_k1.length;l++){ //x_k1=x_k2に上書き
-				x_k1[l] = x_k2[l];
-			}
-
-			if(residualNormInf(A, x_k2, b, eps)){
+			if(judge (n,A,x_new,x_old,b,eps)){ //収束判定
 				System.out.println("反復回数"+count+"回");
-				return x_k2;
+				return x_new;
+			}
+			
+			for(int l=0;l<x_old.length;l++){ //解の更新
+				x_old[l] = x_new[l];
 			}
 		}
 		System.out.println("収束しない");
-		return x_k2;
+		return x_new;
 	}
 
 	/**
@@ -569,7 +572,41 @@ public class Calc {
 	}
 	
 	/**
+	 * 判定法の選択
+	 * @param n 判定法の選択
+	 * (1:相対誤差1ノルム,2:相対誤差2ノルム,3:相対誤差∞ノルム,
+	 * 	4:残差1ノルム,5:残差2ノルム,6:残差∞ノルム)
+	 * @param A 行列
+	 * @param x_new 
+	 * @param x_old 
+	 * @param b ベクトル
+	 * @param eps 許容誤差
+	 * @return boolean
+	 */
+	public static boolean judge (int n,double[][] A,double[] x_new,double[] x_old,double[] b,double eps){
+		switch(n){
+			case 1:
+				return errorNorm1(x_new,x_old,eps);
+			case 2:
+				return errorNorm2(x_new,x_old,eps);
+			case 3:
+				return errorNormInf(x_new,x_old,eps);
+			case 4:
+				return residualNorm1(A,x_new,b,eps);
+			case 5:
+				return residualNorm2(A,x_new,b,eps);
+			case 6:
+				return residualNormInf(A,x_new,b,eps);
+		}
+		System.out.println("判定方法がありません");
+		return false;
+	}
+	
+	/**
 	 * Gauss-Seidel法
+	 * @param n 判定法の選択
+	 * (1:相対誤差1ノルム,2:相対誤差2ノルム,3:相対誤差∞ノルム,
+	 * 	4:残差1ノルム,5:残差2ノルム,6:残差∞ノルム)
 	 * @param A 行列
 	 * @param b ベクトル
 	 * @param x 初期値
@@ -577,68 +614,81 @@ public class Calc {
 	 * @param N 最大反復回数
 	 * @return x (Ax=b)
 	 */
-	public static double[] gaussSeidel(double [][] A,double[] x, double[] b, double eps, int N){
+	public static double[] gaussSeidel(int n,double [][] A,double[] x_old, double[] b, double eps, int N){
 		int count = 0; //反復回数
-
+		double[] x_new = new double[x_old.length];
+		
+		for(int l=0;l<x_old.length;l++){
+			x_new[l] = x_old[l];
+		}
+		
 		for(int m=0;m<N;m++){
 			count++;
 
-			for(int i=0;i<x.length;i++){
-				x[i] = b[i];
+			for(int i=0;i<x_new.length;i++){
+				x_old[i] = x_new[i]; //解の保存
+				x_new[i] = b[i];
 				for(int j=0;j<A[0].length;j++){
 					if(i!=j){
-						x[i] = x[i] - A[i][j]*x[j];
+						x_new[i] = x_new[i] - A[i][j]*x_new[j];
 					}
 				}
-				x[i] = x[i]/A[i][i];
+				x_new[i] = x_new[i]/A[i][i];
 
 			}
 
-			if(residualNormInf(A, x, b, eps)){
+			if(judge(n, A, x_new, x_old, b, eps)){
 				System.out.println("反復回数"+count+"回");
-				return x;
+				return x_new;
 			}
 		}
 		System.out.println("収束しない");
-		return x;
+		return x_new;
 	}
 	
 	/**
 	 * SOR法
+	 * @param n 判定法の選択
+	 * (1:相対誤差1ノルム,2:相対誤差2ノルム,3:相対誤差∞ノルム,
+	 * 	4:残差1ノルム,5:残差2ノルム,6:残差∞ノルム)
 	 * @param A 行列
 	 * @param b ベクトル
-	 * @param x 初期値
+	 * @param x_old 初期値
 	 * @param eps 許容誤差
 	 * @param N 最大反復回数
-	 * @param w 加速パラメータω(0<ω<2)
+	 * @param omega 加速パラメータω(0<ω<2)
 	 * @return x (Ax=b)
 	 */
-	public static double[] SOR(double [][] A,double[] x, double[] b, double eps, int N,double omega){
+	public static double[] SOR(int n, double [][] A, double[] x_old, double[] b, double eps, int N,double omega){
 		int count = 0; //反復回数
+		double[] x_new = new double[x_old.length];
+		
+		for(int l=0;l<x_old.length;l++){
+			x_new[l] = x_old[l];
+		}
 
 		for(int m=0;m<N;m++){
 			count++;
 			
-			double xi_old = 0; 
-			for(int i=0;i<x.length;i++){
-				xi_old = x[i];
-				x[i] = b[i];
+			for(int i=0;i<x_new.length;i++){
+				x_old[i] = x_new[i]; //古い解の保存
+				x_new[i] = b[i];
 				for(int j=0;j<A[0].length;j++){
 					if(i!=j){
-						x[i] = x[i] - A[i][j]*x[j];
+						x_new[i] = x_new[i] - A[i][j]*x_new[j];
 					}
 				}
-				x[i] = x[i]/A[i][i];
-				x[i] = (1.0-omega)*xi_old+omega*x[i];
+				x_new[i] = x_new[i]/A[i][i];
+				x_new[i] = (1.0-omega)*x_old[i]+omega*x_new[i];
 			}
 
-			if(residualNormInf(A, x, b, eps)){
+			if(judge(n, A, x_new, x_old, b, eps)){
 				System.out.println("反復回数"+count+"回");
-				return x;
+				return x_new;
 			}
 		}
 		System.out.println("収束しない");
-		return x;
+		return x_new;
 	}
 
 }
