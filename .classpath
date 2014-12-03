@@ -2,32 +2,5 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="dom4j-1.6.1.jar"/>
-	<classpathentry kind="lib" path="poi-3.10.1-20140818.jar" sourcepath="poi-3.10.1-20140818.jar"/>
-	<classpathentry kind="lib" path="poi-examples-3.10.1-20140818.jar"/>
-	<classpathentry kind="lib" path="poi-excelant-3.10.1-20140818.jar"/>
-	<classpathentry kind="lib" path="poi-ooxml-3.10.1-20140818.jar" sourcepath="poi-3.10.1-20140818.jar"/>
-	<classpathentry kind="lib" path="poi-ooxml-schemas-3.10.1-20140818.jar"/>
-	<classpathentry kind="lib" path="poi-scratchpad-3.10.1-20140818.jar"/>
-	<classpathentry kind="lib" path="stax-api-1.0.1.jar"/>
-	<classpathentry kind="lib" path="xmlbeans-2.6.0.jar"/>
-	<classpathentry kind="lib" path="C:/java/jfreechart/lib/hamcrest-core-1.3.jar"/>
-	<classpathentry kind="lib" path="C:/java/jfreechart/lib/jcommon.jar"/>
-	<classpathentry kind="lib" path="C:/java/jfreechart/lib/jfreechart.jar"/>
-	<classpathentry kind="lib" path="C:/java/jfreechart/lib/jfreechart-1.0.19-experimental.jar"/>
-	<classpathentry kind="lib" path="C:/java/jfreechart/lib/jfreechart-1.0.19-swt.jar"/>
-	<classpathentry kind="lib" path="C:/java/jfreechart/lib/jfreesvg-2.0.jar"/>
-	<classpathentry kind="lib" path="C:/java/jfreechart/lib/junit-4.11.jar"/>
-	<classpathentry kind="lib" path="C:/java/jfreechart/lib/orsoncharts-1.4-eval-nofx.jar"/>
-	<classpathentry kind="lib" path="C:/java/jfreechart/lib/orsonpdf-1.6-eval.jar"/>
-	<classpathentry kind="lib" path="C:/java/jfreechart/lib/servlet.jar"/>
-	<classpathentry kind="lib" path="C:/java/jfreechart/lib/swtgraphics2d.jar"/>
-	<classpathentry kind="lib" path="lib/commons-codec-1.5.jar"/>
-	<classpathentry kind="lib" path="lib/commons-logging-1.1.jar"/>
-	<classpathentry kind="lib" path="lib/junit-4.11.jar"/>
-	<classpathentry kind="lib" path="lib/log4j-1.2.13.jar"/>
-	<classpathentry kind="lib" path="ooxml-lib/dom4j-1.6.1.jar"/>
-	<classpathentry kind="lib" path="ooxml-lib/stax-api-1.0.1.jar"/>
-	<classpathentry kind="lib" path="ooxml-lib/xmlbeans-2.6.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

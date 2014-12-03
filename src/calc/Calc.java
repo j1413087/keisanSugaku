@@ -602,5 +602,42 @@ public class Calc {
 		System.out.println("収束しない");
 		return x;
 	}
+	
+	/**
+	 * SOR法
+	 * @param A 行列
+	 * @param b ベクトル
+	 * @param x 初期値
+	 * @param eps 許容誤差
+	 * @param N 最大反復回数
+	 * @param w 加速パラメータω(0<ω<2)
+	 * @return x (Ax=b)
+	 */
+	public static double[] SOR(double [][] A,double[] x, double[] b, double eps, int N,double w){
+		int count = 0; //反復回数
+
+		for(int m=0;m<N;m++){
+			count++;
+
+			for(int i=0;i<x.length;i++){
+				x[i] = b[i];
+				for(int j=0;j<A[0].length;j++){
+					if(i!=j){
+						x[i] = x[i] - A[i][j]*x[j];
+					}
+				}
+				x[i] = x[i]/A[i][i];
+			}
+
+			if(residualNormInf(A, x, b, eps)){
+				System.out.println("反復回数"+count+"回");
+				return x;
+			}
+		}
+		System.out.println("収束しない");
+		return x;
+	}
+	
+	
 
 }
