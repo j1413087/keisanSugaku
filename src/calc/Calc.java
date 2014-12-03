@@ -238,6 +238,22 @@ public class Calc {
 		}
 		return a;
 	}
+	
+	/**
+	 * フロベニウスノルム
+	 * @param A 行列
+	 * @return double
+	 */
+	public static double  frobeniusNorm(double[][] A){
+		double norm = 0;
+		for(int i=0;i<A.length;i++){
+			for(int j=0;j<A[0].length;j++){
+				norm += A[i][j]*A[i][j];
+			}
+		}
+		norm = Math.sqrt(norm);
+		return norm;
+	}
 
 	public static double[][] randMat(double[][] A){ //ランダム行列の生成
 		for(int i=0;i<A.length;i++){
@@ -404,6 +420,7 @@ public class Calc {
 			for(int j=k-1;j>=0;j--){
 				y[k] = y[k] - LU[k][j]*y[j];
 			}
+			y[k] = y[k]/LU[k][k];
 		}
 		return y;
 	}
@@ -687,8 +704,57 @@ public class Calc {
 				return x_new;
 			}
 		}
+		
 		System.out.println("収束しない");
 		return x_new;
+	}
+	
+	/**
+	 * コレスキー分解
+	 * @param A 行列
+	 * @param b ベクトル
+	 * @return L (A=LL^T)
+	 */
+	public static double[][] choleskyDecomp(double[][] A){
+		
+		double[][] L = new double[A.length][A[0].length];
+		
+		for(int i=0;i<L.length;i++){
+			for(int j=0;j<=i;j++){
+				L[i][j] = A[i][j];
+				if(i==j){
+				for(int k=0;k<=j-1;k++){
+					L[i][i] = L[i][i] - L[i][k]*L[i][k];
+				}
+					L[i][i] = Math.sqrt(L[i][i]);
+				}else{
+					for(int k=0;k<=j-1;k++){
+						L[i][j] = L[i][j] - L[i][k]*L[j][k];
+					}
+					L[i][j] = L[i][j]/L[j][j];
+				}
+			}
+		}
+		
+		return L;
+	}
+	
+	/**
+	 * コレスキー法
+	 * @param A 行列
+	 * @param b ベクトル
+	 * @return x 解
+	 */
+	public static double[] cholesky(double[][] A, double[] b){
+		double[] x = new double[A[0].length];
+		double[][] L = choleskyDecomp(A);
+		double[][] tL = transMat(L);
+		
+		double[] y = new double[x.length];
+		y = forSubst(L, b);
+		x = backSubst(tL, y);
+		
+		return x;
 	}
 
 }
