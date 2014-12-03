@@ -613,13 +613,15 @@ public class Calc {
 	 * @param w 加速パラメータω(0<ω<2)
 	 * @return x (Ax=b)
 	 */
-	public static double[] SOR(double [][] A,double[] x, double[] b, double eps, int N,double w){
+	public static double[] SOR(double [][] A,double[] x, double[] b, double eps, int N,double omega){
 		int count = 0; //反復回数
 
 		for(int m=0;m<N;m++){
 			count++;
-
+			
+			double xi_old = 0; 
 			for(int i=0;i<x.length;i++){
+				xi_old = x[i];
 				x[i] = b[i];
 				for(int j=0;j<A[0].length;j++){
 					if(i!=j){
@@ -627,6 +629,7 @@ public class Calc {
 					}
 				}
 				x[i] = x[i]/A[i][i];
+				x[i] = (1.0-omega)*xi_old+omega*x[i];
 			}
 
 			if(residualNormInf(A, x, b, eps)){
@@ -637,7 +640,5 @@ public class Calc {
 		System.out.println("収束しない");
 		return x;
 	}
-	
-	
 
 }
