@@ -212,6 +212,14 @@ public class Calc {
 		}
 		return a;
 	}
+	
+	public static double vecNormP(double[] x,int p){
+		double a=0;
+		for(int i=0;i<x.length;i++){
+			a+=x[i]*x[i];
+		}
+		return Math.pow(a,(double)1/p);
+	}
 
 	public static double matNorm1(double[][] A){ //行列の1ノルム
 		double a=0;
@@ -484,7 +492,7 @@ public class Calc {
 	 * @param N 最大反復回数
 	 * @return x (Ax=b)
 	 */
-	public static double[] jacobi(int n,double [][] A,double[] x_old, double[] b, double eps, int N){
+	public static double[] jacobi(double [][] A,double[] x_old, double[] b, double eps, int N){
 		double[] x_new = new double[x_old.length];
 		int count = 0; //反復回数
 
@@ -502,7 +510,7 @@ public class Calc {
 
 			}
 
-			if(judge (n,A,x_new,x_old,b,eps)){ //収束判定
+			if(residualNormInf(A, x_new, b, eps)){ //収束判定
 				System.out.println("反復回数"+count+"回");
 				return x_new;
 			}
@@ -589,9 +597,42 @@ public class Calc {
 	}
 	
 	/**
+	 * 相対誤差ノルム1の判定
+	 * @param x_new
+	 * @param x_old
+	 * @param eps 許容誤差
+	 * @return boolean
+	 */
+	public static boolean relativeErrorNorm1(double[] x_new, double[] x_old, double eps){
+		return vecNorm1(subVec(x_new, x_old))/vecNorm1(x_new) < eps ;
+	}
+	
+	/**
+	 * 相対誤差ノルム2の判定
+	 * @param x_new
+	 * @param x_old
+	 * @param eps 許容誤差
+	 * @return boolean
+	 */
+	public static boolean relativeErrorNorm2(double[] x_new, double[] x_old, double eps){
+		return vecNorm2(subVec(x_new, x_old))/vecNorm2(x_new) < eps ;
+	}
+	
+	/**
+	 * 相対誤差ノルム2の判定
+	 * @param x_new
+	 * @param x_old
+	 * @param eps 許容誤差
+	 * @return boolean
+	 */
+	public static boolean relativeErrorNormInf(double[] x_new, double[] x_old, double eps){
+		return vecNormInf(subVec(x_new, x_old))/vecNormInf(x_new) < eps ;
+	}
+	
+	/**
 	 * 判定法の選択
 	 * @param n 判定法の選択
-	 * (1:相対誤差1ノルム,2:相対誤差2ノルム,3:相対誤差∞ノルム,
+	 * (1:誤差1ノルム,2:誤差2ノルム,3:誤差∞ノルム,
 	 * 	4:残差1ノルム,5:残差2ノルム,6:残差∞ノルム)
 	 * @param A 行列
 	 * @param x_new 
@@ -622,8 +663,6 @@ public class Calc {
 	/**
 	 * Gauss-Seidel法
 	 * @param n 判定法の選択
-	 * (1:相対誤差1ノルム,2:相対誤差2ノルム,3:相対誤差∞ノルム,
-	 * 	4:残差1ノルム,5:残差2ノルム,6:残差∞ノルム)
 	 * @param A 行列
 	 * @param b ベクトル
 	 * @param x 初期値
@@ -654,7 +693,7 @@ public class Calc {
 
 			}
 
-			if(judge(n, A, x_new, x_old, b, eps)){
+			if(residualNormInf(A, x_new, b, eps)){
 				System.out.println("反復回数"+count+"回");
 				return x_new;
 			}
@@ -665,9 +704,6 @@ public class Calc {
 	
 	/**
 	 * SOR法
-	 * @param n 判定法の選択
-	 * (1:相対誤差1ノルム,2:相対誤差2ノルム,3:相対誤差∞ノルム,
-	 * 	4:残差1ノルム,5:残差2ノルム,6:残差∞ノルム)
 	 * @param A 行列
 	 * @param b ベクトル
 	 * @param x_old 初期値
@@ -676,7 +712,7 @@ public class Calc {
 	 * @param omega 加速パラメータω(0<ω<2)
 	 * @return x (Ax=b)
 	 */
-	public static double[] SOR(int n, double [][] A, double[] x_old, double[] b, double eps, int N,double omega){
+	public static double[] SOR(double [][] A, double[] x_old, double[] b, double eps, int N,double omega){
 		int count = 0; //反復回数
 		double[] x_new = new double[x_old.length];
 		
@@ -699,7 +735,7 @@ public class Calc {
 				x_new[i] = (1.0-omega)*x_old[i]+omega*x_new[i];
 			}
 
-			if(judge(n, A, x_new, x_old, b, eps)){
+			if(residualNormInf(A, x_new, b, eps)){
 				System.out.println("反復回数"+count+"回");
 				return x_new;
 			}

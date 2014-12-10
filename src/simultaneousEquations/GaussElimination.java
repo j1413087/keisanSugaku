@@ -2,17 +2,16 @@ package simultaneousEquations;
 
 import calc.Calc;
 
-
 public class GaussElimination {
 	
 	double[][] A;
 	double[] b;
-	double[] x;
+	public double[] x;
 	
 	GaussElimination(){
 	}
 	
-	GaussElimination(double[][] A,double[] b){
+	public GaussElimination(double[][] A,double[] b){
 		
 		this.A = Calc.copyMat(A);
 		this.b = Calc.copyVec(b);

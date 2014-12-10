@@ -18,7 +18,7 @@ public class SOR {
 		int N = 100; //最大反復回数
 		double omega = 1.5; //加速パラメータ
 
-		x = Calc.SOR(6,A, x, b, eps, N,omega);
+		x = Calc.SOR(A, x, b, eps, N,omega);
 		System.out.println("x=");
 		Calc.printVec(x);
 	}
