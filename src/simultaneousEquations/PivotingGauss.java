@@ -7,12 +7,12 @@ public class PivotingGauss{
 	
 	double[][] A;
 	double[] b;
-	double[] x;
+	public double[] x;
 	
 	PivotingGauss(){
 	}
 	
-	PivotingGauss(double[][] A,double[] b){
+	public PivotingGauss(double[][] A,double[] b){
 		
 		this.A = new double[A.length][A[0].length];
 		for(int i=0;i<A.length;i++){

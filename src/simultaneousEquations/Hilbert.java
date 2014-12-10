@@ -6,7 +6,7 @@ public class Hilbert {
 
 	public static void main(String[] args) {
 		
-		int n = 5;
+		int n = 12;
 		System.out.println("n="+n);
 		
 		double[][] A = new double[n][n];
@@ -40,16 +40,19 @@ public class Hilbert {
 		System.out.println("   ||x^*-x1||_∞="+Calc.vecNormInf(Calc.subVec(x, g1.x)));
 		
 		//(3)
+		/*
 		double[] db = new double[b.length];
 		db[0] = 0.001*b[0];
 		
 		double sup = kapInfA*Calc.vecNormInf(db)/Calc.vecNormInf(b);
 		System.out.println("(3)sup="+sup);
-		
+		*/
 		//(4)
-		PivotingGauss g2 = new PivotingGauss(A,(Calc.addVec(b, db)));
+		PivotingGauss g2 = new PivotingGauss(A,b/*(Calc.addVec(b, db))*/);
 		g2.pivoting();
 		System.out.println("(4)||x^*-x2||_∞="+Calc.vecNormInf(Calc.subVec(x, g2.x)));
+		System.out.println("(4)相対残差∞="+Calc.vecNormInf(Calc.residual(A, g2.x,b))/Calc.vecNormInf(b));
+		System.out.println("(4)||x^*-x2||_∞/||x^*||_∞="+Calc.vecNormInf(Calc.subVec(x, g2.x))/Calc.vecNormInf(x));
 	}
 
 }
