@@ -524,15 +524,15 @@ public class Calc {
 	}
 
 	/**
-	 * 誤差ノルムの判定
+	 * 誤差ノルム1の判定
 	 * ||x1-x2||_1<ε
 	 * @param x1
 	 * @param x2
 	 * @param eps 許容誤差
 	 * @return boolean
 	 */
-	public static boolean errorNorm1(double[] x1,double[] x2,double eps){
-		return vecNorm1(subVec(x1, x2)) < eps ;
+	public static boolean errorNorm1(double[] x_new, double[] x_old, double eps){
+		return vecNorm1(subVec(x_new, x_old)) < eps ;
 	}
 	/**
 	 * 誤差ノルム2の判定
@@ -542,8 +542,8 @@ public class Calc {
 	 * @param eps 許容誤差
 	 * @return boolean
 	 */
-	public static boolean errorNorm2(double[] x1,double[] x2,double eps){
-		return vecNorm2(subVec(x1, x2)) < eps ;
+	public static boolean errorNorm2(double[] x_new, double[] x_old, double eps){
+		return vecNorm2(subVec(x_new, x_old)) < eps ;
 	}
 	/**
 	 * 誤差ノルム∞の判定
@@ -553,8 +553,8 @@ public class Calc {
 	 * @param eps 許容誤差
 	 * @return boolean
 	 */
-	public static boolean errorNormInf(double[] x1,double[] x2,double eps){
-		return vecNormInf(subVec(x1, x2)) < eps ;
+	public static boolean errorNormInf(double[] x_new,double[] x_old,double eps){
+		return vecNormInf(subVec(x_new, x_old)) < eps ;
 	}
 
 	/**
@@ -619,7 +619,7 @@ public class Calc {
 	}
 	
 	/**
-	 * 相対誤差ノルム2の判定
+	 * 相対誤差ノルム∞の判定
 	 * @param x_new
 	 * @param x_old
 	 * @param eps 許容誤差
@@ -627,37 +627,6 @@ public class Calc {
 	 */
 	public static boolean relativeErrorNormInf(double[] x_new, double[] x_old, double eps){
 		return vecNormInf(subVec(x_new, x_old))/vecNormInf(x_new) < eps ;
-	}
-	
-	/**
-	 * 判定法の選択
-	 * @param n 判定法の選択
-	 * (1:誤差1ノルム,2:誤差2ノルム,3:誤差∞ノルム,
-	 * 	4:残差1ノルム,5:残差2ノルム,6:残差∞ノルム)
-	 * @param A 行列
-	 * @param x_new 
-	 * @param x_old 
-	 * @param b ベクトル
-	 * @param eps 許容誤差
-	 * @return boolean
-	 */
-	public static boolean judge (int n,double[][] A,double[] x_new,double[] x_old,double[] b,double eps){
-		switch(n){
-			case 1:
-				return errorNorm1(x_new,x_old,eps);
-			case 2:
-				return errorNorm2(x_new,x_old,eps);
-			case 3:
-				return errorNormInf(x_new,x_old,eps);
-			case 4:
-				return residualNorm1(A,x_new,b,eps);
-			case 5:
-				return residualNorm2(A,x_new,b,eps);
-			case 6:
-				return residualNormInf(A,x_new,b,eps);
-		}
-		System.out.println("判定方法がありません");
-		return false;
 	}
 	
 	/**
