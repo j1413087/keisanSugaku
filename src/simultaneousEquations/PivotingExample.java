@@ -12,9 +12,8 @@ public class PivotingExample {
 		double[] NormG = new double[100];
 
 		for(int i=0;i<100;i++){
-			double[][] A = new double[100][100];
+			double[][] A = Calc.randMat(100,100);
 			double[]b = new double[A.length];
-			A = Calc.randMat(A);
 			b = Calc.randVec(b);
 
 			p[i] = new PivotingGauss(A,b);

@@ -2,14 +2,22 @@ package calc;
 
 
 public class Calc {
-
-	public static void printVec(double[] x){ //ベクトルの出力
+	
+	/**
+	 * ベクトルの出力
+	 * @param x ベクトル
+	 */
+	public static void printVec(double[] x){
 		for(int i=0;i<x.length;i++){
 			System.out.println(x[i]);
 		}
 	}
-
-	public static void printMat(double[][] A){ //行列の出力
+	
+	/**
+	 * 行列の出力
+	 * @param A 行列
+	 */
+	public static void printMat(double[][] A){
 		for(int i=0;i<A.length;i++){
 			for(int j=0;j<A[0].length;j++){
 				System.out.printf("%5.1f",A[i][j]);
@@ -17,8 +25,14 @@ public class Calc {
 			System.out.println();
 		}
 	}
-
-	public static double[] scalarMultiple (double c,double[] x){ //ベクトルのスカラーc倍
+	
+	/**
+	 * ベクトルのスカラーc倍
+	 * @param c
+	 * @param x ベクトル
+	 * @return cx
+	 */
+	public static double[] scalarMultiple (double c,double[] x){
 		for(int i=0;i<x.length;i++){
 			x[i]=c*x[i];
 		}
@@ -33,10 +47,9 @@ public class Calc {
 	public static double[][] copyMat(double[][] A){
 
 		double[][] X = new double[A.length][A[0].length];
+		
 		for(int i=0;i<A.length;i++){
-			for(int j=0;j<A[i].length;j++){
-				X[i][j] = A[i][j];
-			}
+			System.arraycopy(A[i], 0, X[i], 0, A[i].length);
 		}
 		return X;
 	}
@@ -47,15 +60,18 @@ public class Calc {
 	 * @return b
 	 */
 	public static double[] copyVec(double[] b){
-
 		double[] x = new double[b.length];
-		for(int i=0;i<b.length;i++){
-			x[i] = b[i];
-		}
+		System.arraycopy(b, 0, x, 0, b.length);
 		return x;
 	}
-
-	public static double[] addVec (double[] x,double[] y){ //ベクトル同士の加算
+	
+	/**
+	 * ベクトル同士の加算
+	 * @param x ベクトル
+	 * @param y ベクトル
+	 * @return x+y
+	 */
+	public static double[] addVec (double[] x,double[] y){
 		if(x.length!=y.length){
 			System.out.println("計算できません");
 			return null;
@@ -66,8 +82,14 @@ public class Calc {
 		}
 		return a;
 	}
-
-	public static double[] subVec (double[] x,double[] y){ //ベクトル同士の減算
+	
+	/**
+	 * ベクトル同士の減算
+	 * @param x ベクトル
+	 * @param y ベクトル
+	 * @return x-y
+	 */
+	public static double[] subVec (double[] x,double[] y){
 		if(x.length!=y.length){
 			System.out.println("計算できません");
 			return null;
@@ -78,8 +100,14 @@ public class Calc {
 		}
 		return a;
 	}
-
-	public static double innProd(double[] x,double[] y){ //ベクトル同士の内積
+	
+	/**
+	 * ベクトル同士の内積
+	 * @param x ベクトル
+	 * @param y ベクトル
+	 * @return 内積<x,y>
+	 */
+	public static double innProd(double[] x,double[] y){
 		if(x.length!=y.length){
 			System.out.println("計算できません");
 			return 0;
@@ -90,8 +118,14 @@ public class Calc {
 		}
 		return a;
 	}
-
-	public static double[] matVec (double[][] A,double[] x){ //行列Aとベクトルxの積
+	
+	/**
+	 * 行列Aとベクトルxの積
+	 * @param A 行列
+	 * @param x ベクトル
+	 * @return Ax
+	 */
+	public static double[] matVec (double[][] A,double[] x){
 		double[] a = new double [A.length];
 		if(A[0].length!=x.length){
 			System.out.println("計算できません");
@@ -115,22 +149,47 @@ public class Calc {
 	public static double[] residual (double[][] A,double[] x,double[] b){ //Ax-b(残差)の計算
 		return subVec(matVec(A,x),b);
 	}
-
-	public static double residualNorm2 (double[][] A,double[] x,double[] b){ //Ax-b(残差)のノルム
+	
+	/**
+	 * Ax-b(残差)1ノルム
+	 * @param A 行列
+	 * @param x ベクトル
+	 * @param b ベクトル
+	 * @return ||Ax-b||_1
+	 */
+	public static double residualNorm1 (double[][] A,double[] x,double[] b){
+		return vecNorm1(residual(A, x, b));
+	}
+	
+	/**
+	 * Ax-b(残差)2ノルム
+	 * @param A 行列
+	 * @param x ベクトル
+	 * @param b ベクトル
+	 * @return ||Ax-b||_2
+	 */
+	public static double residualNorm2 (double[][] A,double[] x,double[] b){
 		return vecNorm2(residual(A, x, b));
 	}
+	
 	/**
-	 * 残差∞ノルム
-	 * @param A
-	 * @param x
-	 * @param b
+	 * Ax-b(残差)∞ノルム
+	 * @param A 行列
+	 * @param x ベクトル
+	 * @param b ベクトル
 	 * @return ||Ax-b||_∞
 	 */
 	public static double residualNormInf(double[][] A,double[] x,double[] b){
 		return vecNormInf(residual(A, x, b));
 	}
-
-	public static double[][] addMat (double[][] A,double[][] B){ //行列の加算
+	
+	/**
+	 * 行列の加算
+	 * @param A 行列
+	 * @param B 行列
+	 * @return A+B
+	 */
+	public static double[][] addMat (double[][] A,double[][] B){
 		if(A.length!=B.length
 				||A[0].length!=B[0].length){
 			System.out.println("計算できません");
@@ -144,8 +203,35 @@ public class Calc {
 		}
 		return AB;
 	}
-
-	public static double[][] multipleMat (double[][] A,double[][] B){ //行列の積
+	
+	/**
+	 * 行列の減算
+	 * @param A 行列
+	 * @param B 行列
+	 * @return A-B
+	 */
+	public static double[][] subMat (double[][] A,double[][] B){
+		if(A.length!=B.length
+				||A[0].length!=B[0].length){
+			System.out.println("計算できません");
+			return null;
+		}
+		double[][]AB = new double[A.length][A[0].length];
+		for(int i=0;i<A.length;i++){
+			for(int j=0;j<A[0].length;j++){
+				AB[i][j]=A[i][j]-B[i][j];
+			}
+		}
+		return AB;
+	}
+	
+	/**
+	 * 行列の積
+	 * @param A 行列
+	 * @param B 行列
+	 * @return AB
+	 */
+	public static double[][] multipleMat (double[][] A,double[][] B){
 		if(A[0].length!=B.length){
 			System.out.println("計算できません");
 			return null;
@@ -160,6 +246,7 @@ public class Calc {
 		}
 		return AB;
 	}
+	
 	/**
 	 * n×nの単位行列
 	 * @param n n×n行列
@@ -172,6 +259,7 @@ public class Calc {
 		}
 		return E;
 	}
+	
 	/**
 	 * 転置行列
 	 * @param A
@@ -186,24 +274,39 @@ public class Calc {
 		}
 		return tA;
 	}
-
-	public static double vecNorm1(double[] x){ //ベクトルの1ノルム
+	
+	/**
+	 * ベクトルの1ノルム
+	 * @param x ベクトル
+	 * @return 1ノルム
+	 */
+	public static double vecNorm1(double[] x){
 		double a=0;
 		for(int i=0;i<x.length;i++){
 			a+=Math.abs(x[i]);
 		}
 		return a;
 	}
-
-	public static double vecNorm2(double[] x){ //ベクトルの2ノルム
+	
+	/**
+	 * ベクトルの2ノルム
+	 * @param x ベクトル
+	 * @return 2ノルム
+	 */
+	public static double vecNorm2(double[] x){
 		double a=0;
 		for(int i=0;i<x.length;i++){
 			a+=x[i]*x[i];
 		}
 		return Math.sqrt(a);
 	}
-
-	public static double vecNormInf(double[] x){ //ベクトルの∞ノルム
+	
+	/**
+	 * ベクトルの∞ノルム
+	 * @param x ベクトル
+	 * @return ∞ノルム
+	 */
+	public static double vecNormInf(double[] x){
 		double a=0;
 		for(int i=0;i<x.length;i++){
 			if(Math.abs(x[i])>a){
@@ -213,15 +316,26 @@ public class Calc {
 		return a;
 	}
 	
+	/**
+	 * ベクトルのpノルム
+	 * @param x ベクトル
+	 * @param p
+	 * @return pノルム
+	 */
 	public static double vecNormP(double[] x,int p){
-		double a=0;
+		double sum=0;
 		for(int i=0;i<x.length;i++){
-			a+=x[i]*x[i];
+			sum+=Math.pow(sum, p);
 		}
-		return Math.pow(a,(double)1/p);
+		return Math.pow(sum,(double)1/p);
 	}
-
-	public static double matNorm1(double[][] A){ //行列の1ノルム
+	
+	/**
+	 * 行列の1ノルム
+	 * @param A 行列
+	 * @return 1ノルム
+	 */
+	public static double matNorm1(double[][] A){
 		double a=0;
 		double aj=0;
 		double[][] tA= transMat(A);
@@ -234,8 +348,13 @@ public class Calc {
 		}
 		return a;
 	}
-
-	public static double matNormInf(double[][] A){ //行列の∞ノルム
+	
+	/**
+	 * 行列の∞ノルム
+	 * @param A 行列
+	 * @return ∞ノルム
+	 */
+	public static double matNormInf(double[][] A){
 		double a=0;
 		double ai=0;
 		for(int i=0;i<A.length;i++){
@@ -262,8 +381,15 @@ public class Calc {
 		norm = Math.sqrt(norm);
 		return norm;
 	}
-
-	public static double[][] randMat(double[][] A){ //ランダム行列の生成
+	
+	/**
+	 * ランダム行列(m×n)の生成
+	 * @param m
+	 * @param n
+	 * @return 行列(m×n)
+	 */
+	public static double[][] randMat(int m, int n){
+		double[][] A = new double[m][n];
 		for(int i=0;i<A.length;i++){
 			for(int j=0;j<A[i].length;j++){
 				A[i][j] = Math.random();
@@ -271,8 +397,13 @@ public class Calc {
 		}
 		return A;
 	}
-
-	public static double[] randVec(double[] b){ //ランダムベクトルの生成
+	
+	/**
+	 * ランダムベクトルの生成
+	 * @param b ベクトルの長さ
+	 * @return ベクトル
+	 */
+	public static double[] randVec(double[] b){
 		for(int i=0;i<b.length;i++){
 			b[i] = Math.random();
 		}
@@ -280,7 +411,7 @@ public class Calc {
 	}
 
 	/**
-	 * 行列の行入れ替え
+	 * 行列の行の入れ替え
 	 * @param A 行列
 	 * @param k 入れ替える行
 	 * @param l 入れ替える行
@@ -402,6 +533,7 @@ public class Calc {
 		}
 		return LU;
 	}
+	
 	/**
 	 * LU分解を用いてAx=bを解く
 	 * @param A 行列
@@ -432,8 +564,9 @@ public class Calc {
 		}
 		return y;
 	}
+	
 	/**
-	 * A=LUとしてA逆行列を求める
+	 * 既にA=LUと分解されたところからAの逆行列を求める
 	 * @param LU
 	 * @return inverseA
 	 */
@@ -454,6 +587,7 @@ public class Calc {
 
 		return X;
 	}
+	
 	/**
 	 * 逆行列を求める
 	 * @param A 行列
@@ -534,6 +668,7 @@ public class Calc {
 	public static boolean errorNorm1(double[] x_new, double[] x_old, double eps){
 		return vecNorm1(subVec(x_new, x_old)) < eps ;
 	}
+	
 	/**
 	 * 誤差ノルム2の判定
 	 * ||x1-x2||_2<ε
@@ -545,6 +680,7 @@ public class Calc {
 	public static boolean errorNorm2(double[] x_new, double[] x_old, double eps){
 		return vecNorm2(subVec(x_new, x_old)) < eps ;
 	}
+	
 	/**
 	 * 誤差ノルム∞の判定
 	 * ||x1-x2||_∞<ε
@@ -712,6 +848,56 @@ public class Calc {
 		
 		System.out.println("収束しない");
 		return x_new;
+	}
+	
+	/**
+	 * SOR法の最適ωを見つける
+	 * @param A 行列
+	 * @param x_old
+	 * @param b
+	 * @param eps
+	 * @param N
+	 * @return
+	 */
+	public static double findOmega(double [][] A, double[] x_old, double[] b, double eps, int N){
+		
+		double omega = 0.01;
+		double suitOmega = 0.01;
+		double countMin = N;
+		
+		while(omega<2){
+			int count = 0; //反復回数
+			double[] x_new = new double[x_old.length];
+			
+			for(int l=0;l<x_old.length;l++){
+				x_new[l] = x_old[l];
+			}
+
+			for(int m=0;m<N;m++){
+				count++;
+				
+				for(int i=0;i<x_new.length;i++){
+					x_old[i] = x_new[i]; //古い解の保存
+					x_new[i] = b[i];
+					for(int j=0;j<A[0].length;j++){
+						if(i!=j){
+							x_new[i] = x_new[i] - A[i][j]*x_new[j];
+						}
+					}
+					x_new[i] = x_new[i]/A[i][i];
+					x_new[i] = (1.0-omega)*x_old[i]+omega*x_new[i];
+				}
+
+				if(residualNormInf(A, x_new, b, eps)){
+					if(count<countMin){
+						suitOmega = omega;
+					}
+					break;
+				}
+			}
+			omega = omega + 0.01;
+		}
+		return suitOmega;
 	}
 	
 	/**
