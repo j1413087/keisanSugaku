@@ -14,13 +14,16 @@ public class SOR {
 						};
 		double[] b = {9,11,11,11,11};
 		double[] x = new double [A[0].length];
-		double eps = 1.0E-10; //許容誤差
-		int N = 100; //最大反復回数
-		double omega = 1.5; //加速パラメータ
+		double eps = 1.0E-11; //許容誤差
+		int N = 1000; //最大反復回数
+		double omega = 0.07; //加速パラメータ
 
 		x = Calc.SOR(A, x, b, eps, N,omega);
 		System.out.println("x=");
 		Calc.printVec(x);
+		
+		x = new double [A[0].length];
+		System.out.println("ω="+(Calc.findOmega(A, x, b, eps, N)));
 	}
 
 }

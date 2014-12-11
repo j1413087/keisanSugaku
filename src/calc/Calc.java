@@ -875,7 +875,7 @@ public class Calc {
 
 			for(int m=0;m<N;m++){
 				count++;
-				
+
 				for(int i=0;i<x_new.length;i++){
 					x_old[i] = x_new[i]; //古い解の保存
 					x_new[i] = b[i];
@@ -887,13 +887,15 @@ public class Calc {
 					x_new[i] = x_new[i]/A[i][i];
 					x_new[i] = (1.0-omega)*x_old[i]+omega*x_new[i];
 				}
-
+				
 				if(residualNormInf(A, x_new, b, eps)){
 					if(count<countMin){
 						suitOmega = omega;
+						countMin = count;
 					}
 					break;
 				}
+
 			}
 			omega = omega + 0.01;
 		}
