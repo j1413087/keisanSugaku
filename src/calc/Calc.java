@@ -38,6 +38,32 @@ public class Calc {
 		}
 		return x;
 	}
+	
+	/**
+	 * ベクトルを(2ノルムで)正規化
+	 * @param x ベクトル
+	 * @return 正規ベクトル
+	 */
+	public static double[] normalization(double[] x){
+		double norm2 = vecNorm2(x);
+		double[] xtilda = new double[x.length];
+		System.arraycopy(x, 0, xtilda, 0, x.length);
+		for(int i=0;i<x.length;i++){
+			xtilda[i] = xtilda[i]/norm2;
+		}
+		return xtilda;
+	}
+	
+	/**
+	 * ベクトルを(2ノルムで)正規化
+	 * @param x ベクトル
+	 */
+	public static void normalize(double[] x){
+		double norm2 = vecNorm2(x);
+		for(int i=0;i<x.length;i++){
+			x[i] = x[i]/norm2;
+		}
+	}
 
 	/**
 	 * 行列のディープコピー
@@ -276,6 +302,33 @@ public class Calc {
 	}
 	
 	/**
+	 * 三重対角行列の生成
+	 * @param n n次行列
+	 * @param a 下対角成分
+	 * @param b 対角成分
+	 * @param c 上対角成分
+	 * @return A 三重対角行列
+	 */
+	public static double[][] tridiagonalMatrix(int n, double a, double b, double c){
+		double[][] A = new double[n][n];
+		for(int i=0;i<A.length;i++){
+			for(int j=0;j<A[0].length;j++){
+				if((i-j)==1){
+					A[i][j] = a;
+				}
+				if((i-j)==0){
+					A[i][j] = b;
+				}
+				if((i-j)==-1){
+					A[i][j] = c;
+				}
+			}
+		}
+		
+		return A;
+	}
+	
+	/**
 	 * ベクトルの1ノルム
 	 * @param x ベクトル
 	 * @return 1ノルム
@@ -403,11 +456,12 @@ public class Calc {
 	 * @param b ベクトルの長さ
 	 * @return ベクトル
 	 */
-	public static double[] randVec(double[] b){
-		for(int i=0;i<b.length;i++){
-			b[i] = Math.random();
+	public static double[] randVec(int b){
+		double[] x = new double[b];
+		for(int i=0;i<x.length;i++){
+			x[i] = Math.random();
 		}
-		return b;
+		return x;
 	}
 
 	/**
@@ -948,6 +1002,48 @@ public class Calc {
 		x = backSubst(tL, y);
 		
 		return x;
+	}
+	/**
+	 * べき乗法(powerMethod)
+	 * @param A 行列
+	 * @param x_0 初期ベクトル
+	 * @param eps 許容誤差
+	 * @param N 最大反復回数
+	 * @return λ(絶対値最大固有値)
+	 */
+	public static double powerMethod(double[][] A, double[] x_0, double eps, int N){
+		
+		double lambda_old = 1;
+		double lambda_new = 1;
+		
+		double[] x_old = new double[x_0.length];
+		
+		//x_old←x_0
+		System.arraycopy(x_0, 0, x_old, 0, x_0.length);
+		
+		double[] x_new = new double[x_old.length];
+		
+		for(int i=0;i<N;i++){
+			
+			//正規化
+			normalize(x_old);
+			
+			x_new = matVec(A, x_old);
+			lambda_new = vecNormInf(x_new)/vecNormInf(x_old);
+			
+			//収束判定
+			if(Math.abs((lambda_new-lambda_old)/lambda_new)<eps){
+				return lambda_new;
+			}
+			
+			//x_old←x_newに値を更新
+			System.arraycopy(x_new, 0, x_old, 0, x_new.length);
+			
+			//λの更新
+			lambda_old = lambda_new;
+		}
+		System.out.println("収束しない");
+		return 0;
 	}
 
 }

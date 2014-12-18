@@ -13,8 +13,7 @@ public class PivotingExample {
 
 		for(int i=0;i<100;i++){
 			double[][] A = Calc.randMat(100,100);
-			double[]b = new double[A.length];
-			b = Calc.randVec(b);
+			double[]b = Calc.randVec(A.length);
 
 			p[i] = new PivotingGauss(A,b);
 			g[i] = new GaussElimination(A,b);
