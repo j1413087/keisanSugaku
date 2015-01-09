@@ -13,16 +13,31 @@ public class PowerMethodExamle {
 			A[i][i] = i+1;
 		}
 		*/
+		
+		/*
 		double[][] A = {{4,2,0},
 						{2,4,1},
 						{0,1,4}
 						};
+		*/
+		double[][] A = new double[10][10];
+		
+		for(int i=0;i<A.length;i++){
+			for(int j=0;j<A[0].length;j++){
+				A[i][j] = Math.pow((double)(j+1), i)/Math.pow(10, 10);
+				//A[i][j] = (double)1/(i+j+1);
+			}
+		}
+		
 		double[] x = Calc.randVec(A.length);
+		
 		double eps = 1.0E-20;
+		
 		int N = 1000;
-		System.out.println("A=");
-		Calc.printMat(A);
+		
+		//Calc.printMat(A);
 		PowerMethodExamle.powerMethod(A, x, eps, N);
+		
 	}
 	
 	public static double powerMethod(double[][] A, double[] x_0, double eps, int N){
@@ -49,7 +64,7 @@ public class PowerMethodExamle {
 
 			if(Math.abs((lambda_new-lambda_old)/lambda_new)<eps){
 				System.out.println("反復回数"+count+"回");
-				System.out.println("絶対値最大固有値");
+				System.out.print("絶対値最大固有値");
 				System.out.println(lambda_new);
 				System.out.println("固有ベクトル");
 				Calc.printVec(x_new);

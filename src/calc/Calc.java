@@ -614,7 +614,6 @@ public class Calc {
 			for(int j=k-1;j>=0;j--){
 				y[k] = y[k] - LU[k][j]*y[j];
 			}
-			y[k] = y[k]/LU[k][k];
 		}
 		return y;
 	}
@@ -821,7 +820,6 @@ public class Calc {
 	
 	/**
 	 * Gauss-Seidel法
-	 * @param n 判定法の選択
 	 * @param A 行列
 	 * @param b ベクトル
 	 * @param x 初期値
@@ -829,7 +827,7 @@ public class Calc {
 	 * @param N 最大反復回数
 	 * @return x (Ax=b)
 	 */
-	public static double[] gaussSeidel(int n,double [][] A,double[] x_old, double[] b, double eps, int N){
+	public static double[] gaussSeidel(double [][] A,double[] x_old, double[] b, double eps, int N){
 		int count = 0; //反復回数
 		double[] x_new = new double[x_old.length];
 		
@@ -996,11 +994,18 @@ public class Calc {
 		double[] x = new double[A[0].length];
 		double[][] L = choleskyDecomp(A);
 		double[][] tL = transMat(L);
-		
+
 		double[] y = new double[x.length];
-		y = forSubst(L, b);
+		for(int k=0;k<L.length;k++){
+			y[k] = b[k];
+			for(int j=k-1;j>=0;j--){
+				y[k] = y[k] - L[k][j]*y[j];
+			}
+			y[k] = y[k]/L[k][k];
+		}
+
 		x = backSubst(tL, y);
-		
+
 		return x;
 	}
 	/**

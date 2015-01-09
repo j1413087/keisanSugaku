@@ -18,7 +18,7 @@ public class GaussSeidel {
 		double eps = 1.0E-10; //許容誤差
 		int N = 100; //最大反復回数
 		
-		x = Calc.gaussSeidel(6,A, x, b, eps, N);
+		x = Calc.gaussSeidel(A, x, b, eps, N);
 		System.out.println("x=");
 		Calc.printVec(x);
 	}

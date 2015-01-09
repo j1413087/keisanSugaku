@@ -6,7 +6,7 @@ public class Hilbert {
 
 	public static void main(String[] args) {
 		
-		int n = 12;
+		int n = 10;
 		System.out.println("n="+n);
 		
 		double[][] A = new double[n][n];

@@ -15,7 +15,7 @@ public class LUdecomposition {
 	public void LUdecompo(){
 		this.x = Calc.LUsolve(this.A, this.b);
 	}
-	/*
+	
 	public static void main(String[] args) {
 
 		double[][] A = {
@@ -30,7 +30,7 @@ public class LUdecomposition {
 		
 		GaussElimination g = new GaussElimination(A, b);
 		g.gaussElim();
-		Pivoting p = new Pivoting(A, b);
+		PivotingGauss p = new PivotingGauss(A, b);
 		p.pivoting();
 		LUdecomposition lu = new LUdecomposition(A, b);
 		lu.LUdecompo();
@@ -42,5 +42,4 @@ public class LUdecomposition {
 		System.out.println("LU");
 		Calc.printVec(lu.x);
 	}
-	*/
 }
