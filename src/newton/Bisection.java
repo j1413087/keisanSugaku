@@ -1,6 +1,6 @@
 package newton;
 
-public class Bisection {
+public class Bisection { //ニ分法
 
 	public static void main(String[] args) {
 		double a=0;

@@ -1,5 +1,10 @@
 package newton;
 
+//ニュートン法、セカント法、PC法の2つの誤差判定をメソッド化
+
+//関数メソッドFとfは抽象クラスのため、使用する際は、
+//このクラスを継承したサブクラスを宣言し、Fとfをオーバーライドすること。
+
 abstract public class Interaction {
 	
 	public double eps; //許容誤差

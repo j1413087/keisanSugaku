@@ -9,9 +9,6 @@ public class N_adic {
 	
 	static char[] ch = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
 	
-	N_adic(){
-	}
-	
 	N_adic(String Si,int N){ //n進数とその値を代入
 		if(N>ch.length){
 			System.out.println("この進数には対応してません");
