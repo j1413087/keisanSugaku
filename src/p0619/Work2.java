@@ -1,7 +1,7 @@
 package p0619;
 
 //import newton.Cvg;
-public class P0619 {
+public class Work2 {
 
 	//反復法と収束の速さ
 	public static void main(String[] args) {
