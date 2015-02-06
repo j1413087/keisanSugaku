@@ -1,129 +1,91 @@
 package practice;
 
-//import newton.Cvg;
-public class Work2 {
+public class Work2 { //演習課題2
 
-	//反復法と収束の速さ
 	public static void main(String[] args) {
 		
-		double x = -5;
-		double x0 = x;
-		double x1 = x0+1.0;
-		double eps = 1.0E-10;
-		int count = 0;
-		int N = 50;
+		System.out.println("問題1");
 		
-		//f(x)=sinx/(x-1)
-		//g(x)=(x-4)^4
-		
-		double xx = 0;
-		int countMax = 0;
-		while(Math.abs(((xx-x0)/x0))>=eps){ //相対誤差
-			count++;
-			//System.out.println(x);
-			xx = x0;
-			x0 = x0-f(x0)/df(x0);
-			if(count==N){
-				break;
-			}
-		}
-		System.out.println("x="+x0);
-		countMax = count;
-		System.out.println("再帰回数"+count);
-		
-		count = 0;
-		double a = 0;
-		x0 = x;
-		while(Math.abs(((x1-x0)/x0))>=eps){ //相対誤差
-			count++;
-			//System.out.println(x1);
-			a = x1;
-			x1 = x1-f(x1)*((x1-x0)/(f(x1)-f(x0)));
-			x0 = a;
-			if(count==N){
-				break;
-			}
-		}
-		
-		System.out.println("x="+x1);
-		System.out.println("再帰回数"+count);
-		
-		count = 0;
-		x0 = x;
-		xx = 0;
-		double df0 = df(x0);
-		while(Math.abs(((xx-x0)/x0))>=eps){ //相対誤差
-			count++;
-				//System.out.println(x);
-				xx = x0;
-				x0 = x0-f(x0)/df0;
-				if(count==N){
-					break;
-				}
-		}
-		System.out.println("x="+x0);
-		System.out.println("再帰回数"+count);
-		
-		count = 0;
-		x0 = x;
-		xx = 0;
-		a = 2*Math.PI;
-		while(Math.abs(((xx-x0)/x0))>=eps){ //相対誤差
-			count++;
-			xx = x0;
-			x0 = x0-f(x0)/df(x0);
-			if(count>(countMax-5)){
-				System.out.println("(e_"+count+")="+Math.abs(x0-a));
-			}
-			if(count==N){
-				break;
-			}
-
-		}
-		
-		count = 0;
-		x0 = x;
-		xx = 0;
-		eps = 1.0E-8;
-		double dg0 = dg(x0);
-		while(Math.abs(((xx-x0)/x0))>=eps){ //相対誤差
-			count++;
-				//System.out.println(x);
-				xx = x0;
-				x0 = x0-g(x0)/dg0;
-				if(count>=200){
-					break;
-				}
-		}
-		System.out.println("x="+x0);
-		System.out.println("再帰回数"+count);
+		float a = 0.1f;
+		float b = 0.3f;
+		float c = 0.4f;
 		
 		/*
-		x0 = x;
-		x1 = x+1.0;
-		Cvg.newtonRE(eps, x0, N);
-		Cvg.newtonResidual(eps, x0, N);
-		Cvg.ParallelChordRd(eps, x0, N);
-		Cvg.ParallelChordRE(eps, x0, N);
-		Cvg.secantResidual(eps, x0, x1, N);
-		Cvg.secantRE(eps, x1, x0, N);
+		System.out.printf("a="+"%.16f\n",a);
+		System.out.printf("b="+"%.16f\n",b);
+		System.out.printf("c="+"%.16f\n",c);
 		*/
+		System.out.printf("(左辺)="+"%.16f\n",(a+b)+c);
+		System.out.printf("(右辺)="+"%.16f\n",a+(b+c));
+		
+		
+		/*******************/
+		
+		System.out.println("問題2");
+		
+		double x = 1.0E-7;
+		double fx = 0.0;
+		
+		fx = (Math.sin(x)*Math.sin(x))/x*x*(1+Math.cos(x));
+		
+		System.out.println("sin(x)^2/x^2(1+x^2*cos(x))");
+		System.out.println("="+fx);
+		
+		fx = ((1-Math.cos(x))/(x*x));
+		
+		System.out.println("(1-cos(x))/x^2");
+		System.out.println("="+fx);
+		
+		
+		/**********************/
+		
+		System.out.println("問題3");
+		
+		S(500);
+		S(5000);
+		S(50000);
+		
+		/**********************/
+		
+		System.out.println("問題4");
+		
+		float sum_old = 0.0f; //k=n
+		float sum_new = 0.0f; //k=n+1
+		
+		int N;
+		
+		float k=1.0f;
+		
+		do{
+			sum_old = sum_new;
+			sum_new += 1/(k*k);
+			N = (int)k-1;
+			k++;
+		}while(sum_new>sum_old);
+		
+		System.out.println("N="+N);
+		System.out.println(sum_new);
 	}
 	
-	static double f (double x){
-		return Math.sin(x)/(x-1);
-	}
-	
-	static double df (double x){
-		return ((Math.cos(x)*(x-1)-Math.sin(x))/((x-1)*(x-1)));
-	}
-	
-	static double g (double x){
-		return Math.pow((x-1),4);
-	}
-	
-	static double dg (double x){
-		return 4*Math.pow((x-1),3);
+	static void S(int n){
+		
+		System.out.println("n="+n);
+		
+		float sum = 0.0f;
+		
+		for(float k=1.0f;k<=n;k++){
+			sum += 1/(k*k);
+		}
+		System.out.println("k:1→n");
+		System.out.println(sum);
+		
+		sum = 0.0f;
+		for(float k=n;k>=1;k--){
+			sum += 1/(k*k);
+		}
+		System.out.println("k:n→1");
+		System.out.println(sum);
+		
 	}
 
 }
