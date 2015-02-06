@@ -1,4 +1,4 @@
-package p0619;
+package practice;
 
 //import newton.Cvg;
 public class Work2 {

@@ -1,8 +1,8 @@
-package p0417;
+package practice;
 
 import calc.Calc;
 
-public class Work0417 {
+public class Work1 {
 	
 	//演習課題1の解答のためのコード
 	
