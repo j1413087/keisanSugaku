@@ -1,6 +1,7 @@
 package binaryDigits;
 
-public class Horner {
+public class Horner { //ホーナー法
+	
 	public static void main(String[] args) {
 		
 		int[] inte = {1,1,0,1}; //整数部分
